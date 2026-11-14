@@ -1,0 +1,18 @@
+# Git и локальная среда
+.git
+.venv
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Секреты и локальные настройки
+.env
+.env.*
+!.env.example
+
+# IDE и системные файлы
+.idea/
+.vscode/
+.DS_Store
