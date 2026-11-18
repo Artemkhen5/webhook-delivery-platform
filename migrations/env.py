@@ -10,6 +10,8 @@ from alembic import context
 from wdp.core.config import get_settings
 from wdp.db.base import Base
 
+import wdp.db.models
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
