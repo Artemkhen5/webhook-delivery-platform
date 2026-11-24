@@ -24,3 +24,9 @@ class EndpointResponse(BaseModel):
 
 class ListEndpoints(BaseModel):
     endpoints: list[EndpointResponse]
+
+
+class EndpointUpdateRequest(BaseModel):
+    url: HttpUrl | None = None
+    event_types: list[str] | None = None
+    is_active: bool | None = None
