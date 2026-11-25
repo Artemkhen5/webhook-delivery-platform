@@ -1,11 +1,11 @@
 from uuid import UUID
 
 from fastapi import HTTPException
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from wdp.db.models import Endpoint, EndpointSubscription
-from wdp.schemas.endpoint import EndpointResponse, EndpointUpdateRequest
+from wdp.schemas.endpoint import EndpointUpdateRequest
 
 
 async def add_endpoint(
@@ -20,6 +20,15 @@ async def add_endpoint(
         url=url,
         secret_encrypted=secret_encrypted,
     )
+
+    existing_id = await session.scalar(
+        select(Endpoint.id)
+        .where(Endpoint.account_id == account_id)
+        .where(Endpoint.url == url)
+    )
+    if existing_id is not None:
+        raise HTTPException(status_code=409, detail="Endpoint already exists")
+
     session.add(endpoint)
     await session.flush()
     return endpoint

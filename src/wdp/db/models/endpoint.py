@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID, uuid7
 
-from sqlalchemy import ForeignKey, Text, Boolean, text, DateTime, func
+from sqlalchemy import ForeignKey, Text, Boolean, text, DateTime, func, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 
@@ -39,4 +39,12 @@ class Endpoint(Base):
         DateTime(timezone=True),
         nullable=False,
         server_default=func.now()
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "account_id",
+            "url",
+            name="uq_endpoints_account_id_url"
+        ),
     )
