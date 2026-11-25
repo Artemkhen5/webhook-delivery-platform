@@ -152,3 +152,23 @@ async def sync_event_types(
         )
 
     return sorted(requested_types)
+
+
+async def deactivate_endpoint(
+        session: AsyncSession,
+        *,
+        account_id: UUID,
+        endpoint_id: UUID,
+) -> None:
+    stmt = (
+        select(Endpoint)
+        .where(Endpoint.id == endpoint_id)
+        .where(Endpoint.account_id == account_id)
+    )
+    endpoint = await session.scalar(stmt)
+
+    if endpoint is None:
+        raise HTTPException(status_code=404, detail="Endpoint not found")
+
+    endpoint.is_active = False
+    await session.commit()

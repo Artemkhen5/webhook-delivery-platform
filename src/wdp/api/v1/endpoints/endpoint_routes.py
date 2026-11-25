@@ -98,3 +98,22 @@ async def update_endpoint(
         event_types=event_types,
         is_active=endpoint.is_active,
     )
+
+
+@router.delete(
+    "/{endpoint_id}",
+)
+async def deactivate_endpoint(
+        session: SessionDep,
+        *,
+        account: AccountDep,
+        endpoint_id: UUID,
+) -> dict:
+    await endpoints_repository.deactivate_endpoint(
+        session,
+        account_id=account.id,
+        endpoint_id=endpoint_id
+    )
+    return {
+        "message": f"Endpoint with id = {endpoint_id} deactivated.",
+    }
